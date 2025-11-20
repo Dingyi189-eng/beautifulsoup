@@ -1,18 +1,25 @@
 # Milestone-3
 
-## run the replacer
-### task7_replacer.py
+## Overview
+Milestone3 extends the SoupReplacer API to support parsing-time transformations of HTML/XML tags.
+Compared to Milestone 2, the new API supports flexible transformations using functions (name_xformer, attrs_xformer, xformer) rather than just simple tag replacement.
+
+## task7.py
+### Overview
 Replace all b tags with blockquote tags.
+### How to Run
 ```
 cd apps/m3
 ```
 ```
-python task7_replacer.py example.html
+python task7.py example.html
 ```
 
-## run the test
-### task7_replacer.py
-Replace all b tags with blockquote tags.
+## test_soupreplacer_m3.py
+### Overview
+This test suite validates all key features of the SoupReplacer API in Milestone 3. It checks that tag names can be transformed dynamically (name_xformer), attributes can be modified (attrs_xformer), and arbitrary side-effect transformations can be applied (xformer) during parsing. 
+The tests also cover combined transformations on a single tag, nested tags, and scenarios where no transformation is needed to ensure non-targeted tags remain unchanged.
+### How to Run
 ```
 cd bs4/tests
 ```

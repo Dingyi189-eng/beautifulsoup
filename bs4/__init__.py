@@ -490,23 +490,7 @@ class BeautifulSoup(Tag):
         # reference to this object.
         self.markup = None
         self.builder.soup = None
-        if self.replacer:
-            self.apply_replacer()
 
-    def apply_replacer(self):
-        if not self.replacer:
-            return
-        for tag in self.find_all(True):
-            if self.replacer.name_xformer:
-                new_name = self.replacer.name_xformer(tag)
-                if new_name and new_name != tag.name:
-                    tag.name = new_name
-            if self.replacer.attrs_xformer:
-                new_attrs = self.replacer.attrs_xformer(tag)
-                if new_attrs is not None:
-                    tag.attrs = new_attrs
-            if self.replacer.xformer:
-                self.replacer.xformer(tag)
 
     def copy_self(self) -> "BeautifulSoup":
         """Create a new BeautifulSoup object with the same TreeBuilder,

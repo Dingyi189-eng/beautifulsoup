@@ -10,7 +10,7 @@ from bs4.soup_replacer import SoupReplacer
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python task7_replacer.py <input_file>")
+        print("Usage: python task7.py <input_file>")
         sys.exit(1)
 
     input_file = sys.argv[1]
@@ -25,10 +25,7 @@ def main():
     replacer = SoupReplacer(xformer=add_class_test)
 
     with open(input_file, "r", encoding="utf-8") as f:
-        soup = BeautifulSoup(f, "html.parser")
-
-    for tag in soup.find_all(True):
-        replacer.replace_tag(tag)
+        soup = BeautifulSoup(f, "html.parser", replacer=replacer)
 
     output_file = os.path.join(os.path.dirname(__file__), "output_p_class_test.html")
     with open(output_file, "w", encoding="utf-8") as f:

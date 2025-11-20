@@ -8,7 +8,7 @@ import sys
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python task4_strainer.py <input_file>")
+        print("Usage: python task4.py <input_file>")
         return
 
     input_file = sys.argv[1]

@@ -8,17 +8,17 @@ import sys
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python task3_strainer.py <input_file>")
+        print("Usage: python task2.py <input_file>")
         return
 
     input_file = sys.argv[1]
 
     with open(input_file, 'r', encoding='utf-8') as f:
-        strainer = SoupStrainer(True)
+        strainer = SoupStrainer('a')
         soup = BeautifulSoup(f, 'lxml', parse_only=strainer)
 
-    tags = {tag.name for tag in soup.find_all(True)}
-    print("All tags in document:", tags)
+    for link in soup:
+        print(link)
 
 if __name__ == "__main__":
     main()

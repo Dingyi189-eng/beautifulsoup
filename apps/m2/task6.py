@@ -9,7 +9,7 @@ from bs4.soup_replacer import SoupReplacer
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python task6_replacer.py <input_file>")
+        print("Usage: python task6.py <input_file>")
         return
 
     replacer = SoupReplacer("b", "blockquote")
