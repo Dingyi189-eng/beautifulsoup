@@ -6,6 +6,7 @@ sys.path.insert(0, project_root)
 from bs4 import BeautifulSoup
 from bs4.soup_replacer import SoupReplacer
 
+# Test that name_xformer correctly changes the tag name during parsing.
 def test_name_xformer():
     html = "<b>bold</b>"
     replacer = SoupReplacer(name_xformer=lambda tag: "blockquote" if tag.name=="b" else tag.name)
@@ -13,6 +14,7 @@ def test_name_xformer():
     assert soup.find("blockquote") is not None
     print("test_name_xformer passed")
 
+# Test that attrs_xformer correctly modifies tag attributes.
 def test_attrs_xformer():
     html = '<p class="old">text</p>'
     def change_attrs(tag):
@@ -22,6 +24,7 @@ def test_attrs_xformer():
     assert soup.find("p")["class"] == ["new"]
     print("test_attrs_xformer passed")
 
+# Test that xformer can perform side-effect changes on a tag.
 def test_xformer_side_effect():
     html = "<div></div>"
     def add_attr(tag):
@@ -31,6 +34,7 @@ def test_xformer_side_effect():
     assert soup.find("div")["data-test"] == "yes"
     print("test_xformer_side_effect passed")
 
+# Test that multiple transformers (name_xformer, attrs_xformer, xformer) work together.
 def test_combined_transformers():
     html = '<p class="old">Hello</p>'
     def change_attrs(tag):
@@ -47,6 +51,7 @@ def test_combined_transformers():
     assert tag["data-added"] == "yes"
     print("test_combined_transformers passed")
 
+# Test that transformers correctly handle nested tags.
 def test_nested_tags():
     html = "<div><p>text</p></div>"
     replacer = SoupReplacer(name_xformer=lambda tag: "section" if tag.name=="p" else tag.name)
@@ -56,6 +61,7 @@ def test_nested_tags():
     assert tag.text == "text"
     print("test_nested_tags passed")
 
+# Test that transformers do not affect tags that are not targeted.
 def test_empty_or_nonexistent_tags():
     html = "<div></div>"
     replacer = SoupReplacer(

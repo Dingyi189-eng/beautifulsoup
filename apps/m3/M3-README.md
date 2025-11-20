@@ -4,6 +4,18 @@
 Milestone3 extends the SoupReplacer API to support parsing-time transformations of HTML/XML tags.
 Compared to Milestone 2, the new API supports flexible transformations using functions (name_xformer, attrs_xformer, xformer) rather than just simple tag replacement.
 
+## Directory Structure
+```
+beautifulsoup/
+├── apps/
+│   └── m3/
+│       └── task7.py
+├── bs4/
+│   ├── tests/
+│   │   └── test_soupreplacer_m3.py
+│   └── soup_replacer.py
+```
+
 ## task7.py
 ### Overview
 Replace all b tags with blockquote tags.

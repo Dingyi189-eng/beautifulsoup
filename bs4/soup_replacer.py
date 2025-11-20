@@ -14,16 +14,18 @@ class SoupReplacer:
         if self.og_tag and self.alt_tag and tag.name == self.og_tag:
             tag.name = self.alt_tag
 
+        # Name transformation
         if self.name_xformer:
             new_name = self.name_xformer(tag)
             if new_name:
                 tag.name = new_name
 
+        # Attribute transformation
         if self.attrs_xformer:
             new_attrs = self.attrs_xformer(tag)
             if new_attrs is not None:
                 tag.attrs = new_attrs
-
+        # Arbitrary transformation
         if self.xformer:
             self.xformer(tag)
 

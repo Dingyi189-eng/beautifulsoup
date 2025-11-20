@@ -1,6 +1,7 @@
 import sys
 import os
 
+# Add the project root directory to Python's search path to import bs4
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.insert(0, project_root)
 
@@ -18,12 +19,14 @@ def main():
         print(f"Error: File '{input_file}' not found.")
         sys.exit(1)
 
+    # Define the xformer function: add class="test" to all <p> tags
     def add_class_test(tag):
         if tag.name == "p":
             tag.attrs["class"] = ["test"]
 
     replacer = SoupReplacer(xformer=add_class_test)
 
+    # Read the file and parse it
     with open(input_file, "r", encoding="utf-8") as f:
         soup = BeautifulSoup(f, "html.parser", replacer=replacer)
 
