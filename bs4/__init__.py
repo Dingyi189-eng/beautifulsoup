@@ -491,6 +491,14 @@ class BeautifulSoup(Tag):
         self.markup = None
         self.builder.soup = None
 
+    def __iter__(self):
+        #Allow BeautifulSoup object to be iterated over all nodes.
+        return self._traverse(self)
+
+    def _traverse(self, node):
+        yield node
+        for child in getattr(node, 'children', []):
+            yield from self._traverse(child)
 
     def copy_self(self) -> "BeautifulSoup":
         """Create a new BeautifulSoup object with the same TreeBuilder,
