@@ -22,9 +22,10 @@ class SoupReplacer:
 
         # Attribute transformation
         if self.attrs_xformer:
-            new_attrs = self.attrs_xformer(tag)
+            new_attrs  = self.attrs_xformer(tag)
             if new_attrs is not None:
                 tag.attrs = new_attrs
+
         # Arbitrary transformation
         if self.xformer:
             self.xformer(tag)

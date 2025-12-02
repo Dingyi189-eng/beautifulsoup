@@ -492,12 +492,19 @@ class BeautifulSoup(Tag):
         self.builder.soup = None
 
     def __iter__(self):
-        #Allow BeautifulSoup object to be iterated over all nodes.
-        return self._traverse(self)
+        yield self
+        for child in getattr(self, "children", []):
+            yield from self._traverse(child)
 
     def _traverse(self, node):
+        if isinstance(node, NavigableString):
+            yield node
+            return
+        if isinstance(node, Doctype):
+            yield node
+            return
         yield node
-        for child in getattr(node, 'children', []):
+        for child in getattr(node, "children", []):
             yield from self._traverse(child)
 
     def copy_self(self) -> "BeautifulSoup":
@@ -1055,6 +1062,7 @@ class BeautifulSoup(Tag):
         )
         if hasattr(self, "replacer") and self.replacer:
             tag = self.replacer.replace_tag(tag)
+
         if tag is None:
             return tag
         if self._most_recent_element is not None:

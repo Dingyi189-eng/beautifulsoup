@@ -1,10 +1,14 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+# 指向 bs4 的父目录
+local_bs4_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, local_bs4_path)
 
 from bs4 import BeautifulSoup, SoupStrainer
-import sys
+
+import bs4
+print("Loaded bs4 from:", bs4.__file__)
 
 def main():
     if len(sys.argv) < 2:
@@ -17,8 +21,8 @@ def main():
         strainer = SoupStrainer('a')
         soup = BeautifulSoup(f, 'lxml', parse_only=strainer)
 
-    for link in soup:
-        print(link)
+    for tag in soup.find_all(True):
+        print(tag)
 
 if __name__ == "__main__":
     main()

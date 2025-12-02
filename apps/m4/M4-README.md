@@ -5,11 +5,19 @@ Milestone 4 adds iteration support directly to the BeautifulSoup class.
 By implementing the `__iter__()` method and a recursive generator,
 ```
 def __iter__(self):
-    return self._traverse(self)
+    yield self
+    for child in getattr(self, "children", []):
+        yield from self._traverse(child)
 
 def _traverse(self, node):
+    if isinstance(node, NavigableString):
+        yield node
+        return
+    if isinstance(node, Doctype):
+        yield node
+        return
     yield node
-    for child in getattr(node, 'children', []):
+    for child in getattr(node, "children", []):
         yield from self._traverse(child)
 ```
 Soup object can now be used in any Python iterator context.
@@ -30,7 +38,7 @@ Python’s `for ... in ...` loop requires the object to implement:
 Once this method exists, the Soup object can be used in any iterator context.
 
 
-## Direction Structure
+## Directory Structure
 ```
 beautifulsoup/
 ├── apps/

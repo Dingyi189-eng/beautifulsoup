@@ -18,7 +18,7 @@ beautifulsoup/
 
 ## task7.py
 ### Overview
-Replace all b tags with blockquote tags.
+Find all the <p> tags and add (or replace) a class attribute class="test" using SoupReplacer's xformer API.
 ### How to Run
 ```
 cd apps/m3

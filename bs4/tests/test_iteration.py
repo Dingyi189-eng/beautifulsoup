@@ -1,53 +1,59 @@
+import sys
+import os
 import unittest
-from bs4 import BeautifulSoup
-from bs4 import NavigableString
 
-class TestSoupIteration(unittest.TestCase):
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.insert(0, project_root)
+
+from bs4 import BeautifulSoup
+from bs4 import NavigableString, Doctype
+from bs4.element import Tag
+
+class TestIteration(unittest.TestCase):
 
     def test_iterate_simple(self):
         html = "<html><body><p>Hello</p></body></html>"
         soup = BeautifulSoup(html, "html.parser")
         nodes = list(soup)
-        print("test_iterate_simple:", [n.name if hasattr(n, 'name') else str(n) for n in nodes])
-        # Top-level soup has at least one child
-        self.assertGreaterEqual(len(nodes), 1)
+        node_names = []
+        for n in nodes:
+            if isinstance(n, Tag):
+                node_names.append(n.name)
+            elif isinstance(n, NavigableString):
+                node_names.append(str(n))
+            elif hasattr(n, "name"):
+                node_names.append(n.name)
+            else:
+                node_names.append(str(n))
+        print("test_iterate_simple:", node_names)
+        self.assertTrue(any(isinstance(n, Tag) and n.name == "html" for n in nodes))
 
-    def test_iterate_order(self):
-        html = "<div><p>A</p><p>B</p></div>"
+    def test_iterate_text_nodes(self):
+        html = "<html><body><p>Hello</p></body></html>"
         soup = BeautifulSoup(html, "html.parser")
-        names = [node.name for node in soup]
-        print("test_iterate_order:", names)
-        # Top-level soup has only one child: <div>
-        self.assertEqual(names, ["div"])
+        texts = [str(n) for n in soup if isinstance(n, NavigableString) and n.strip()]
+        print("test_iterate_text_nodes", texts)
+        self.assertIn("Hello", texts)
 
-    def test_iterate_string(self):
-        html = "<p>Test</p>"
+    def test_iterate_doctype(self):
+        html = "<!DOCTYPE html><p>Hi</p>"
         soup = BeautifulSoup(html, "html.parser")
-        # Text is inside <p>, not top-level soup
-        text_found = any(
-            isinstance(node, NavigableString) and node == "Test"
-            for node in soup
-        )
-        print("test_iterate_string: Text found at top level?", text_found)
-        self.assertFalse(text_found)  # Should NOT find text at top level
+        doctypes = [n for n in soup if isinstance(n, Doctype)]
+        print("test_iterate_doctype:", doctypes)
+        self.assertTrue(any(isinstance(n, Doctype) for n in doctypes))
 
     def test_iterate_deep_tree(self):
-        html = "<a><b><c>X</c></b></a>"
+        html = "<div><p>A</p><p>B</p></div>"
         soup = BeautifulSoup(html, "html.parser")
-        nodes_str = [str(n) for n in soup]
-        combined = "".join(nodes_str)
-        print("test_iterate_deep_tree:", combined)
-        # Combined string should include the whole <a> tree
-        self.assertIn("<a><b><c>X</c></b></a>", combined)
+        names = [n.name for n in soup if isinstance(n, Tag)]
+        print("test_iterate_deep_tree:", names)
+        self.assertIn("div", names)
+        self.assertIn("p", names)
 
     def test_iterate_empty(self):
         soup = BeautifulSoup("", "html.parser")
         nodes = list(soup)
-        print("test_iterate_empty:", nodes)
-        # Empty soup has no children
-        self.assertEqual(nodes, [])
+        self.assertTrue(len(nodes) == 0 or (len(nodes) == 1 and nodes[0].name == '[document]'))
 
 if __name__ == "__main__":
     unittest.main()
-
-

@@ -14,7 +14,7 @@ def main():
     input_file = sys.argv[1]
 
     with open(input_file, 'r', encoding='utf-8') as f:
-        strainer = SoupStrainer(True)
+        strainer = SoupStrainer()
         soup = BeautifulSoup(f, 'lxml', parse_only=strainer)
 
     tags = {tag.name for tag in soup.find_all(True)}
